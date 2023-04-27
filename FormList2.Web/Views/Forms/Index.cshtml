@@ -1,0 +1,139 @@
+﻿@section css
+    {
+    <style type="text/css">
+
+        h1 {
+            color: saddlebrown;
+        }
+
+        label {
+            color: blueviolet
+        }
+
+        button {
+            color: green;
+            background-color: orangered;
+        }
+
+        h1 {
+            color: purple;
+            font-weight: 200;
+        }
+
+        a {
+            color: darkblue;
+        }
+
+        th {
+            color: rebeccapurple;
+        }
+
+        table {
+            background-color: lightgray;
+        }
+
+        td {
+            color: deeppink;
+            background-color: cornflowerblue;
+        }
+    </style>
+    }
+@model List<Form>
+<h1>UPDATE PAGE</h1>
+
+
+<form id="form-container" asp-controller="Form" asp-action="Update" method="post">
+    <label>Form Name</label>
+    <input type="text" name="FormName" class="form-control" />
+    <br />
+
+<label>Description</label>
+<input type="text" name="Description" class="form-control" />
+<br />
+
+<label>Created At</label>
+<input type="datetime-local" name="CreatedAt" class="form-control" />
+<br />
+
+<label>Created By</label>
+<input type="text" name="CreatedBy" class="form-control" />
+<br />
+
+<label>Name</label>
+<input type="text" name="Name" class="form-control" />
+<br />
+
+<label>Surname</label>
+<input type="text" name="SurName" class="form-control" />
+<br />
+
+<label for="Age">Age</label>
+<input type="number" id="age" name="Age" class="form-control" min="0" max="120" />
+
+<div class="modal-footer">
+    <button type="submit" class="btn btn-success">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Form Name</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Created By</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var form in Model)
+        {
+            <tr>
+                @if (form != null)
+                {
+                    <td>@form.Id</td>
+                    <td>@form.FormName</td>
+                    <td>@form.Field.Name</td>
+                    <td>@form.Field.SurName</td>
+                    <td>@form.Field.Age</td>
+                    <td>@form.Description</td>
+                    <td>@form.CreatedAt</td>
+                    <td>@form.CreatedBy</td>
+                    <td><a href="/Form/Update/@form.Id" class="btn btn-success">Edit</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    
+
+    $(document).ready(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Update", "Form")',
+                data: $(this).serialize(),
+                success: function () {
+                    alert('Form updated successfully');
+                    // Burada yapılacak diğer işlemleri ekleyebilirsiniz
+                },
+                error: function () {
+                    alert('An error occurred while updating the form.');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+

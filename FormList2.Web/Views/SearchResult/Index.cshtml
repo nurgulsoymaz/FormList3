@@ -1,0 +1,203 @@
+﻿<form id="searchForm" method="POST">
+                 @*   <label>Form Name</label>
+                    <input type="text" name="FormName" class="form-control" />
+                    <br />
+
+                    <label>Description</label>
+                    <input type="text" name="Description" class="form-control" />
+                    <br />
+
+                    <label>Created At</label>
+                    <input type="datetime-local" name="CreatedAt" class="form-control" />
+                    <br />
+
+                    <label>Created By</label>
+                    <input type="text" name="CreatedBy" class="form-control" />
+                    <br />
+
+                    <label>Name</label>
+                    <input type="text" name="Name" class="form-control" />
+                    <br />
+
+                    <label>Surname</label>
+                    <input type="text" name="SurName" class="form-control" />
+                    <br />
+
+                    <label for="Age">Age</label>
+                    <input type="number" id="age" name="Age" class="form-control" min="0" max="120" />*@
+
+
+</form>
+
+@model List<Form>
+@*<button type="submit" value="Search" id="searchBtn">Search</button>*@
+
+<br />
+<br />
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Form Name</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Age</th>
+                <th>Description</th>
+                <th>Created at</th>
+                <th>Created By</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="searchResults">
+            @foreach (var form in Model)
+            {
+                <tr>
+                    @if (form != null)
+                    {
+                        <td>@form.Id</td>
+                        <td>@form.FormName</td>
+                        <td>@form.Field.Name</td>
+                        <td>@form.Field.SurName</td>
+                        <td>@form.Field.Age</td>
+                        <td>@form.Description</td>
+                        <td>@form.CreatedAt</td>
+                        <td>@form.CreatedBy</td>
+
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No results found.</p>
+}
+<script>
+    $(document).ready(function () {
+        $('#searchBtn').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                //url: '@Url.Action("Search", "Form")',
+                Url.Action("Search", "Form", new { id = formId })
+
+
+                data: $('#searchForm').serialize(),
+                success: function (result) {
+                    $('#searchResults').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
+
+        // Yeniden gönderme butonu işleyicisi
+        $('#searchAgainBtn').on('click', function () {
+            $('#searchForm')[0].reset();
+            $('#searchResults').empty();
+            $('#searchInput').focus();
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            function loadComments() {
+
+                $("#loading").show();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/SearchResult/FormInfo"
+                            success: function (data) {
+                        console.log(data);
+                        $("#comments").html("");
+                        $.each(data, function (index, item) {
+
+                            let comment = ` <div class="card mt-3">
+                                                            <div class="card-body">
+                                                            <h5 class="card-title">${item.FormName}</h5>
+
+                                                                            <p class"card-text">${item.Description}</p>
+                                                                            <h6 class="card-subtitle mb-2 text-muted">${item.CreatedAt}</h6>
+                                                                             <h6 class="card-subtitle mb-2 text-muted">${item.CreatedBy}</h6>
+                                                                             <h6 class="card-subtitle mb-2 text-muted">${item.Name}</h6>
+                                                                             <h6 class="card-subtitle mb-2 text-muted">${item.SurName}</h6>
+                                                                             <h6 class="card-subtitle mb-2 text-muted">${item.Age}</h6>
+
+                                                                     </div>
+                                                                      </div>`;
+
+                            $("#comments").append(comment);
+
+                        });
+
+                        $("#loading").hide();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+
+            }
+
+            loadComments();
+
+            $("btnSave").click(function () {
+
+                var name = $("#Name").val();
+
+                var comment = $("#Comment").val();
+
+                var jsonData = { "name": name, "comment": comment };
+
+                $.ajax({
+                type: "POST",
+                url: "/SearchResult/FormInfos"
+                data: jsonData,
+                    success: function (data) {
+                        console.log("datas is saved !");
+                        loadComments();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+
+
+            })
+
+        })
+
+    </script>
+}
+*@

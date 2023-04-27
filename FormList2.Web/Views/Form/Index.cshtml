@@ -1,0 +1,265 @@
+﻿
+
+<h1>FORM LIST</h1>
+
+
+@*//----------------------------------------------------------------------------------------------------------------*@
+@*ARAMA BUTONU*@
+@using (Html.BeginForm("Index", "SearchResult", FormMethod.Post, new { id = "searchForm" }))
+{
+    <p>
+        @Html.Label("Search by FormName: ")
+        @Html.TextBox("FormName", null, new { id = "searchInput" })
+
+        <button class="btn btn-primary" type="submit" value="Search" name="search" id="searchBtn">Search</button>
+
+        @if (ViewBag.FormName != null)
+        {
+            @Html.ActionLink("Search by FormName", "Index", new { FormName = ViewBag.FormName })
+        }
+    </p>
+}
+
+
+<!-- Include dependencies -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.bundle.min.js"></script>
+
+<!-- HTML code -->
+<button class="btn btn-primary" id="newFormBtn">New Form </button>
+
+<div class="modal" tabindex="-1" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create a form</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createForm">
+                    <label>Form Name</label>
+                    <input type="text" name="FormName" class="form-control" />
+                    <br />
+
+                    <label>Description</label>
+                    <input type="text" name="Description" class="form-control" />
+                    <br />
+
+                    <label>Created At</label>
+                    <input type="datetime-local" name="CreatedAt" class="form-control" />
+                    <br />
+
+                    <label>Created By</label>
+                    <input type="text" name="CreatedBy" class="form-control" />
+                    <br />
+
+                    <label>Name</label>
+                    <input type="text" name="Name" class="form-control" />
+                    <br />
+
+                    <label>Surname</label>
+                    <input type="text" name="SurName" class="form-control" />
+                    <br />
+
+                    <label for="Age">Age</label>
+                    <input type="number" id="age" name="Age" class="form-control" min="0" max="120" />
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<br />
+
+
+@model List<Form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Form Name</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Description</th>
+            <th>Created at</th>
+            <th>Created By</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var form in Model)
+        {
+            <tr>
+                @if (form != null)
+                {
+                    <td>@form.Id</td>
+                    <td>@form.FormName</td>
+                    <td>@form.Field.Name</td>
+                    <td>@form.Field.SurName</td>
+                    <td>@form.Field.Age</td>
+                    <td>@form.Description</td>
+                    <td>@form.CreatedAt</td>
+                    <td>@form.CreatedBy</td>
+
+                    <td>
+                        <form asp-controller="Form" asp-action="Update" method="get">
+                            <input type="hidden" name="id" value="@form.Id" />
+                   
+                        <button id="edit-btn" class="btn btn-success" data-form-id="@form.Id">Edit</button>
+                    
+
+
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $("#edit-btn").click(function (e) {
+            e.preventDefault();
+            var formId = $(this).data("form-id");
+            $.ajax({
+                type: "GET",
+                url: "/Form/Update?id=" + formId,
+                success: function (response) {
+                    // Redirect to the Index page
+                    window.location.href = "/Form/Index";
+                    // Update the page with the response data
+                    $("#form-container").html(response);
+                },
+                error: function () {
+                    alert("An error occurred while loading the form page.");
+                }
+            });
+        });
+    });
+
+    //success: function () {
+    //    // Redirect to the Index page
+    //    window.location.href = "/Form/Index";
+
+    //    // Hide the modal after a short delay
+    //    setTimeout(function () {
+    //        $("#Modal1").modal("hide");
+    //    }, 500);
+    //},
+    //error: function () {
+    //    $("#error-message").show();
+    //}
+    //                });
+    //            });
+    //        });
+
+
+
+
+
+    // Handle the "New Form" button click event
+    $('#newFormBtn').click(function () {
+        // Open the modal
+        $('#Modal1').modal('show');
+    });
+
+    // Handle form submission
+    $('#createForm').submit(function (e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        // Serialize the form data
+        var formData = $('#createForm').serialize();
+        console.log(formData); // Debugging statement
+
+        // Submit the form data using AJAX
+        $.ajax({
+            type: 'POST',
+            url: '/Form/Save',
+            data: formData,
+            success: function () {
+                // Redirect to the Index page
+                window.location.href = '/Form/Index';
+
+                // Hide the modal after a short delay
+                setTimeout(function () {
+                    $('#Modal1').modal('hide');
+                }, 500);
+            }
+        });
+    });
+</script>
+
+@*//----------------------------------------------------------------------------------------------------------------*@
+@* new form modal*@
+
+
+@*
+<div class="modal fade" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create a form</h2>
+            </div>
+            <form asp-controller="FormController" asp-action="Create" method="post">
+                <div class="modal-body"></div>
+
+                <label>
+                    Form Name
+                </label>
+                <input type="text" name="FormName" class="form-control" />
+                <br />
+
+                <label>
+                    Description
+                </label>
+                <input type="text" name="Description" class="form-control" />
+                <br />
+
+                <label>
+                    Created At
+                </label>
+                <input type="datetime-local" name="CreatedAt" class="form-control" />
+                <br />
+
+                <label>
+                    Cretated By
+                </label>
+                <input type="text" name="CretatedBy" class="form-control" />
+                <br />
+
+                <label>
+                    Name
+                </label>
+                <input type="text" name="Name" class="form-control" />
+                <br />
+
+                <label>
+                    Surname
+                </label>
+                <input type="text" name="SurName" class="form-control" />
+                <br />
+
+                <label for="age">
+                    Age
+                </label>
+                <input type="text" id="age" name="Age" class="form-control" min="0" max="120" />
+
+                <br />
+                <br />
+                <button type="submit" class="btn btn-info"> SUBMİT </button>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>*@

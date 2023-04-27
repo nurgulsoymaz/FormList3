@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\FormList2.Web.props" />
+</Project>

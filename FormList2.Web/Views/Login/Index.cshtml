@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+body{
+     background: #fff;
+    text-align: center;
+    font-family: 'Roboto',sans-serif;
+}
+
+.panda{
+    position:relative;
+    width:200px;
+    margin:50px auto;
+}
+
+.face{
+    width:200px;
+    height:200px;
+    background:#fff;
+    border-radius:50%;
+    margin:50px auto;
+    box-shadow:0 10px 15px rgba(0,0,0,0.15);
+    z-index:50;
+    position:relative;
+}
+
+.ear, .ear:after{
+    position:absolute;
+    width:80px;
+    height:80px;
+    background:#000;
+    z-index:5;
+    border:15px solid #fff;
+    left:-15px;
+    top:-15px;
+    border-radius:100%;
+}
+
+.ear:after{
+    content:'';
+    left:125px;
+}
+
+.eye-shade{
+    background:#000;
+    width:50px;
+    height:80px;
+    margin:10px;
+    position:absolute;
+    top:35px;
+    left:25px;
+    transform:rotate(220deg);
+    border-radius:25px/20px 30px 35px 40px;
+}
+
+.eye-shade.rgt{
+transform:rotate(140deg);
+left:105px;
+}
+
+.eye-white{
+    position:absolute;
+    width:30px;
+    height:30px;
+    background:#fff;
+    left:40px;
+    top:80px;
+    border-radius:100%;
+    overflow:hidden;
+    z-index:500
+}
+
+.eye-white.rgt{
+    right:40px;
+    left:auto;
+}
+
+.eye-ball{
+    position:absolute;
+    width:0px;
+    height:0px;
+    left:20px;
+    top:20px;
+    max-width:10px;
+    max-height:10px;
+    transition:0.1s;
+}
+.eye-ball:after{
+    content:'';
+    background:#000;
+    width:20px;
+    height:20px;
+    right:0px;
+    position:absolute;
+    bottom:0px;
+    border-radius:100%;
+}
+
+.nose {
+    position: absolute;
+    width: 35px;
+    height: 20px;
+    bottom: 40px;
+    background: #000;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 20px;
+    border: 50px 20px/30px 15px;
+    transform: rotate(15deg);
+}
+
+.body{
+     Background: #fff;
+    width:250px;
+    height:282px;
+    position:absolute;
+    top:200px;
+    left:-20px;
+    border-radius:100px 100px 100px 100px/126px 126px 96px 96px;
+    box-shadow:0 5px 10px rgba(0,0,0,0.3);
+}
+
+.hand,
+.hand:after,
+.hand:before{
+    width:40px;
+    height:30px;
+    border-radius:50px;
+    background:#000;
+    margin:5px;
+    box-shadow:0 2px 3px rgba(0,0,0,0.15);
+    position:absolute;
+    top:70px;
+    left:-25px;
+}
+
+.hand:after,
+.hand:before{
+    content:'';
+    left:-5px;
+    top:11px;
+}
+
+.hand:before{
+    top:26px;
+}
+
+.hand.rgt,
+.rgt.hand:after,
+.rgt.hand:before {
+ left: auto;
+ right: -25px; /*changing 1: - koyuldu*/
+    }
+
+.hand.rgt:after,
+ .hand.rgt:before {
+    left: auto;
+    right: -5px;
+    }
+
+.foot{
+    top:360px;
+    left:-80px;
+    position:absolute;
+    background:#000;
+    width:82px;
+    height:120px;
+    z-index:2000;
+    box-shadow:0 5px 5px rgba(0,0,0,0.2);
+    border-radius:40px 40px 39px 40px/26px 26px 63px 63px;
+}
+
+.foot:after{
+    content:'';
+    width:55px;
+    height:65px;
+    background:#222;
+    left:0;
+    bottom:10px;
+    right:0;
+    margin:auto;
+    border-radius:100%;
+    position:absolute;
+}
+   
+
+.foot .finger, .foot .finger:after,
+.foot .finger:before{
+    position:absolute;
+    width:25px;
+    height:35px;
+    background:#222;
+    border-radius:100%;
+    top:10px;
+    right:5px;
+}
+
+.foot .finger:after,
+.foot .finger:before {
+    content:'';
+    right:30px;
+    width:20px;
+    top:0;
+ }
+
+.foot .finger:before{
+    right:55px;
+    top:5px;
+}
+
+.foot.rgt{
+    left:auto;
+    right:-80px;
+}
+
+.foot.rgt .finger,
+.foot.rgt .finger:after,
+.foot.rgt .finger:before{
+    left:5px;
+    right:auto;
+}
+
+.foot.rgt .finger:after{
+    left:30px;
+    right:auto;
+}
+
+.foot.rgt .finger:before{
+    left:55px;
+    right:auto;
+}
+
+form {
+    display: none;
+    max-width: 400px;
+    padding: 20px 40px;
+    background: #fff;
+    height: 300px;
+    margin: auto;
+    display: block;
+    z-index: 500;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    transition: 0.3s;
+    -webkit-transform: translateY(-100px); /*changing 2 :-webkit-transform*/
+    transform: translateY(-100px);
+    border: 1px solid #eee;
+    position: relative;
+}
+
+form.up{
+    -webkit-transform: translateY(-180px);
+    transform:translateY(-180deg);
+}
+.form-group .links a {
+    color: #cc3367;
+    text-decoration: none; /* Alt çizgiyi kaldırır */
+}
+
+h1{
+    color: #ff4081;
+    font-family:'Dancing Script';
+}
+
+
+.btn {
+    background: #fff;
+    width: 150px;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid #ff4081;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 50px #ff4081 inset;
+}
+.btn:hover{
+    box-shadow:0 0 #ff4081 inset;
+    color: #ff4081;
+    font-weight:500;
+}
+
+.btn:focus{
+    outline:none;
+}
+
+.form-group{
+    position:relative;
+    font-size:16px;
+    color:#666;
+}
+
+.form-group + .form-group{
+    margin-top: 30px;
+}
+
+.form-group .form-label{
+    position:absolute;
+    z-index:1;
+    left:0;
+    top:5px;
+    transition:0.3s;
+}
+
+.form-group .form-control {
+    width: 100%;
+    position:relative;
+    z-index:3;
+    background:none;
+    height:35px;
+    border:none;
+    transition:0.3s;
+    border-bottom:1px solid #777;
+    color: #555;
+    padding: 5px 0;
+}
+
+.form-group .form-control:invalid{
+    outline:none;
+}
+
+.form-group .form-control:focus,
+.form-group .form-control:valid{
+    outline:none;
+    box-shadow:0 1px #ff4081;
+    border-color: #ff4081;
+}
+
+.form-group .form-control:focus + .form-label,
+.form-group .form-control:valid + .form-label{
+     font-size:12px;
+     color: #ff4081;
+     transform:translateY(-15px);
+ }
+
+
+    </style>
+
+    <title> HELLO :)</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LoginPage.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    <div class="panda">
+        <div class="ear"></div>
+        <!-- face -->
+        <div class="face">
+            <div class="eye-shade"></div>
+            <div class="eye-white">
+                <div class="eye-ball"></div>
+            </div>
+            <div class="eye-shade rgt"></div>
+            <div class="eye-white rgt">
+                <div class="eye-ball"></div>
+            </div>
+            <div class="nose"></div>
+            <div class="mouth"></div>
+
+        </div>
+
+        <!--end of face-->
+        <!--body starts-->
+
+        <div class="body"></div>
+        <div class="foot">
+            <div class="finger"></div>
+        </div>
+        <div class="foot rgt">
+            <div class="finger"></div>
+        </div>
+    </div>
+
+    <!--end of panda design-->
+    <!--start login design-->
+    <!-- Login form -->
+   
+        <form class="login100-form validate-form" asp-action="Index" asp-controller="Login" method="post" style="max-width: 500px; margin: 0 auto;">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+      
+            <h1> WELCOME </h1>
+            <!--hand design-->
+
+            <div class="hand"></div>
+            <div class="hand rgt"></div>
+
+            <div class="form-group">
+                <input type="text" name="UserName" placeholder="Username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="Password" placeholder="Password" class="form-control" required>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div class="form-group">
+
+                <button id="login-button" class="btn btn-primary">LOG IN</button>
+
+            </div>
+            <div id="error-message" style="display: none;">Invalid credentials.</div>
+            <div style="display: flex; flex-direction: row; margin-left: 10px;">
+                <a href="#" style="margin-top: 10px; margin-right: 10px;">Forgot Password</a>
+                <a href="#" style="margin-top: 10px;">Sign up</a>
+            </div>
+        </form>
+        
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#login-button").click(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Login/Index",
+                    data: $("#login-form").serialize(),
+                    success: function () {
+                        // Redirect to the Index page
+                        window.location.href = "/Form/Index";
+
+                        // Hide the modal after a short delay
+                        setTimeout(function () {
+                            $("#Modal1").modal("hide");
+                        }, 500);
+                    },
+                    error: function () {
+                        $("#error-message").show();
+                    }
+                });
+            });
+        });
+
+
+
+        $(document).ready(function () {
+            alert("Hello...I'm NURGÜL :)");
+
+            $('#password').focusin(function () {
+                $('form').addClass('up')
+            });
+
+            $('#password').focusout(function () {
+                $('form').addClass('up')
+            });
+        });
+
+        
+    </script>
+
+</body>
+</html>
+@*<form class="login100-form validate-form" action="~/Login/Index/" method="post" style="max-width: 500px; margin: 0 auto;">
+
+        <h1> WELCOME </h1>
+
+        <!--hand design-->
+
+        <div class="hand"></div>
+        <div class="hand rgt"></div>
+
+
+
+        <div class="form-group">
+            <input placeholder="username" name ="UserName"  required="required" class="form-control" />
+
+        </div>
+        <div class="form-group">
+            <input placeholder="password" name="Password" type="password"
+                   required="required" id="password"
+                   class="form-control" />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <!--sign up, forget password-->
+
+            <div class="links" style="display: flex; align-items: center;">
+
+                <a class="btn" asp-controller="Form" asp-action="Index">LOG IN</a>
+
+
+
+                <div style="display: flex; flex-direction: column; margin-left: 10px;">
+                    <br />
+    <a href="#" style="margin-top: 10px;">Forgot Password</a>
+    <a href="#" style="margin-top: 10px;">Sign up</a>
+  </div>
+</div>
+
+
+        </div>
+    </form>*@
